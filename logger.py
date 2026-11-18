@@ -1,20 +1,20 @@
+from datetime import datetime
 
-from datetime import datetime, timezone
-
+VERSION = "0.0.3"
 
 DEFAULT_FORMAT = "%Y-%m-%d %H:%M:%S"
-VERSION = "0.0.2"
+_format = DEFAULT_FORMAT
 
 
 class config:
     @staticmethod
     def setFormat(user_format):
-        global DEFAULT_FORMAT
-        DEFAULT_FORMAT = user_format
+        global _format
+        _format = user_format
 
 
 def get_timestamp():
-    return datetime.now().astimezone().strftime(DEFAULT_FORMAT)
+    return datetime.now().astimezone().strftime(_format)
 
 
 class Log:
@@ -26,16 +26,23 @@ class Log:
 class LogFile:
     def __init__(self, filename):
         self.filename = filename
+        self._f = open(filename, "a", encoding="utf-8", buffering=1) # thanks random stranger who suggested that. I don't appreicate you critisizing my code.
 
     def clean(self):
-        with open(self.filename, "w", encoding="utf-8") as f:
-            pass
+        self._f.truncate(0)
+
+    def close(self):
+        if not self._f.closed:
+            self._f.close()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        self.close()
 
     def _append(self, level, message):
-        timestamp = get_timestamp()
-
-        with open(self.filename, "a", encoding="utf-8") as f:
-            f.write(f"[{level}] [{timestamp}] {message}\n")
+        self._f.write(f"[{level}] [{get_timestamp()}] {message}\n")
 
     def info(self, message):
         self._append("INFO", message)
@@ -54,6 +61,6 @@ class LogFile:
 
 
 if __name__ == "__main__":
-    log = Log.init("example.log")
-    log.info("This is an example.")
+    with Log.init("example.log") as log:
+        log.info("This is an example.")
     print(f"Created example.log (logger v{VERSION})")
