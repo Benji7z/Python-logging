@@ -11,5 +11,5 @@ run `logger.py` directly to get a demo, same goes for `example.py`
 > Yes, incase you're lazy -> no.
 
 
-contact me on my discord `benji1278`
+contact me on my discord `benji1278`  
 Tell eu.org to hurry up with my domain
