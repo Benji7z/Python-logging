@@ -1,25 +1,20 @@
 
-from datetime import datetime
+from datetime import datetime, timezone
 
-defaultFormat = "%Y-%m-%d %H:%M:%S"
-Format = defaultFormat
+
+DEFAULT_FORMAT = "%Y-%m-%d %H:%M:%S"
+VERSION = "0.0.2"
 
 
 class config:
     @staticmethod
-    def setFormat(userFormat):
-        global Format
-
-        try:
-            datetime.now().strftime(userFormat)
-            Format = userFormat
-        except (ValueError, TypeError) as e:
-            print(f"[ERROR] Invalid datetime format '{userFormat}': {e}")
-            Format = defaultFormat
+    def setFormat(user_format):
+        global DEFAULT_FORMAT
+        DEFAULT_FORMAT = user_format
 
 
 def get_timestamp():
-    return datetime.now().strftime(Format)
+    return datetime.now().astimezone().strftime(DEFAULT_FORMAT)
 
 
 class Log:
@@ -33,25 +28,32 @@ class LogFile:
         self.filename = filename
 
     def clean(self):
-        with open(self.filename, "w"):
+        with open(self.filename, "w", encoding="utf-8") as f:
             pass
+
+    def _append(self, level, message):
+        timestamp = get_timestamp()
+
+        with open(self.filename, "a", encoding="utf-8") as f:
+            f.write(f"[{level}] [{timestamp}] {message}\n")
 
     def info(self, message):
         self._append("INFO", message)
 
-    def error(self, message):
-        self._append("ERROR", message)
-
     def warning(self, message):
         self._append("WARNING", message)
 
-    def _append(self, level, message):
-        with open(self.filename, "a") as f:
-            f.write(f"[{level}] [{get_timestamp()}] {message}\n")
+    def error(self, message):
+        self._append("ERROR", message)
+
+    def debug(self, message):
+        self._append("DEBUG", message)
+
+    def critical(self, message):
+        self._append("CRITICAL", message)
 
 
 if __name__ == "__main__":
-    Log.init("example.log").info("This is an example.")
-    print("Created example.log")
-else:
-    print("[INFO] Using logger.py v0.0.1")
+    log = Log.init("example.log")
+    log.info("This is an example.")
+    print(f"Created example.log (logger v{VERSION})")
