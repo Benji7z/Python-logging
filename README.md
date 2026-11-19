@@ -9,11 +9,12 @@ run `logger.py` directly to get a demo, same goes for `example.py`
 
 ### *Is it better if I made my own?*
 > Yes, incase you're lazy -> no.
+> Seriously, I made this in 15 minutes
 
 \* error handling is not proper
 
 ### *How do I use this?*
-> Put `logger.py` in your project root and import it
+> Put `logger.py` in your project root and import it (see more in [`example.py`](https://github.com/Benji7z/Python-logging/blob/main/example.py))
 
 ### *It doesn't work, I wanna fix it*
 > I preferred if you contacted me to fix your issue instead of putting it into AI.
@@ -26,5 +27,10 @@ run `logger.py` directly to get a demo, same goes for `example.py`
 > https://github.com/Benji7z/Python-logging/blob/main/LICENSE
 
 
-contact me on my discord `benji1278`  
-Tell eu.org to hurry up with my domain
+### *Are updates gonna come?*
+> I'm looking forward to making more updates
+
+__CONTACT__
+> _Discord_: benji1278  
+> _Portfolio_: https://benji7z.pages.dev  
+> _E-Mail_: Depends  
